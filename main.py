@@ -1,4 +1,3 @@
-```python
 import customtkinter as ctk
 from tkinter import messagebox
 
@@ -313,4 +312,4 @@ if __name__ == "__main__":
 
         print("ReWear startup error:", error)
         raise
-```
+
