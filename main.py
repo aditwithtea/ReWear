@@ -1,4 +1,4 @@
-
+```python
 import customtkinter as ctk
 from tkinter import messagebox
 
@@ -12,18 +12,26 @@ from frontend.wardrobe import WardrobeFrame
 
 
 # ==========================================
-# REWEAR APPLICATION THEME
+# REWEAR QUIET LUXURY COLOUR PALETTE
 # ==========================================
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
-BG = "#F7F4EF"
-SIDEBAR = "#332B27"
-ACCENT = "#B77B62"
-WHITE = "#FFFFFF"
-TEXT = "#332B27"
-MUTED = "#8B8178"
+BG = "#F7F4EF"          # Warm ivory
+SIDEBAR = "#EEE8DE"     # Soft cream
+CARD = "#FFFFFF"        # White
+TAUPE = "#B6A797"       # Taupe
+MOCHA = "#806C5B"       # Mocha
+TEXT = "#382F2A"        # Deep espresso
+MUTED = "#8B8178"       # Muted brown
+SAGE = "#A7AA96"        # Muted sage
+BORDER = "#E5DED4"      # Soft border
+
+# Button colours
+PRIMARY = "#382F2A"
+PRIMARY_HOVER = "#806C5B"
+ACTIVE_BG = "#F7F4EF"
 
 
 # ==========================================
@@ -40,9 +48,9 @@ class ReWearApp(ctk.CTk):
         initialize_database()
 
         # Window settings
-        self.title("ReWear | Smart Digital Wardrobe")
-        self.geometry("1300x800")
-        self.minsize(1050, 650)
+        self.title("ReWear | Your Digital Closet")
+        self.geometry("1440x900")
+        self.minsize(1100, 700)
         self.configure(fg_color=BG)
 
         self.current_page = "Dashboard"
@@ -62,9 +70,10 @@ class ReWearApp(ctk.CTk):
 
         self.sidebar = ctk.CTkFrame(
             self,
-            width=235,
+            width=225,
             corner_radius=0,
-            fg_color=SIDEBAR
+            fg_color=SIDEBAR,
+            border_width=0
         )
 
         self.sidebar.pack(side="left", fill="y")
@@ -74,17 +83,17 @@ class ReWearApp(ctk.CTk):
         ctk.CTkLabel(
             self.sidebar,
             text="reWear.",
-            font=("Arial", 32, "bold"),
-            text_color=WHITE
-        ).pack(anchor="w", padx=28, pady=(35, 3))
+            font=("Cormorant Garamond", 38, "bold"),
+            text_color=TEXT
+        ).pack(anchor="w", padx=28, pady=(30, 0))
 
-        # Subtitle
+        # Brand subtitle
         ctk.CTkLabel(
             self.sidebar,
-            text="YOUR DIGITAL WARDROBE",
-            font=("Arial", 9),
-            text_color="#C2B5AA"
-        ).pack(anchor="w", padx=30, pady=(0, 40))
+            text="Y O U R   D I G I T A L   C L O S E T",
+            font=("DM Sans", 8),
+            text_color=MOCHA
+        ).pack(anchor="w", padx=30, pady=(0, 45))
 
         # Navigation buttons
         self.nav_buttons = {}
@@ -103,17 +112,18 @@ class ReWearApp(ctk.CTk):
             button = ctk.CTkButton(
                 self.sidebar,
                 text=f"   {symbol}    {name}",
-                height=48,
-                corner_radius=10,
+                height=44,
+                corner_radius=8,
                 anchor="w",
-                font=("Arial", 14),
+                font=("DM Sans", 13),
                 fg_color="transparent",
-                hover_color="#51423B",
-                text_color=WHITE,
-                command=lambda p=name: self.navigate(p)
+                hover_color="#E5DED4",
+                text_color=TEXT,
+                command=lambda p=name: self.navigate(p),
+                border_width=0
             )
 
-            button.pack(fill="x", padx=15, pady=5)
+            button.pack(fill="x", padx=12, pady=4)
 
             self.nav_buttons[name] = button
 
@@ -121,9 +131,10 @@ class ReWearApp(ctk.CTk):
         ctk.CTkLabel(
             self.sidebar,
             text="Dress better.\nWear smarter.",
-            font=("Arial", 12, "italic"),
-            text_color="#C2B5AA"
-        ).pack(side="bottom", pady=30)
+            font=("Cormorant Garamond", 18, "italic"),
+            text_color=MOCHA,
+            justify="left"
+        ).pack(side="bottom", anchor="w", padx=28, pady=30)
 
     # ======================================
     # MAIN CONTENT AREA
@@ -134,7 +145,8 @@ class ReWearApp(ctk.CTk):
         self.content = ctk.CTkFrame(
             self,
             fg_color=BG,
-            corner_radius=0
+            corner_radius=0,
+            border_width=0
         )
 
         self.content.pack(
@@ -163,8 +175,12 @@ class ReWearApp(ctk.CTk):
         # Highlight active sidebar button
         for name, button in self.nav_buttons.items():
 
+            is_active = name == page
+
             button.configure(
-                fg_color=ACCENT if name == page else "transparent"
+                fg_color=ACTIVE_BG if is_active else "transparent",
+                text_color=TEXT,
+                hover_color="#E5DED4"
             )
 
         # Clear previous screen
@@ -256,14 +272,14 @@ class ReWearApp(ctk.CTk):
         ctk.CTkLabel(
             self.content,
             text=page,
-            font=("Arial", 30, "bold"),
+            font=("Cormorant Garamond", 34),
             text_color=TEXT
         ).pack(pady=(150, 15))
 
         ctk.CTkLabel(
             self.content,
             text="This section is under development.",
-            font=("Arial", 14),
+            font=("DM Sans", 13),
             text_color=MUTED
         ).pack()
 
@@ -297,3 +313,4 @@ if __name__ == "__main__":
 
         print("ReWear startup error:", error)
         raise
+```
