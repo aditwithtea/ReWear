@@ -1,0 +1,44 @@
+# Virtual environments
+.venv/
+.venv-mobile/
+venv/
+env/
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Local databases
+database/
+backend/database/
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded personal photos
+uploads/
+mobile/uploads/
+frontend/uploads/
+
+# Secrets
+.env
+.env.*
+
+# Build files
+build/
+dist/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
