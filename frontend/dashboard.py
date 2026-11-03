@@ -1,3 +1,4 @@
+
 import customtkinter as ctk
 from pathlib import Path
 from PIL import Image
@@ -36,7 +37,6 @@ class DashboardFrame(ctk.CTkFrame):
         self.navigate_callback = navigate_callback
         self.images = []
 
-        # Main dashboard layout
         self.create_layout()
 
     # ======================================
@@ -53,15 +53,14 @@ class DashboardFrame(ctk.CTkFrame):
         self.wrapper.pack(
             fill="both",
             expand=True,
-            padx=34,
-            pady=24
+            padx=30,
+            pady=22
         )
 
         self.wrapper.grid_columnconfigure(0, weight=1)
         self.wrapper.grid_columnconfigure(1, weight=0)
-        self.wrapper.grid_rowconfigure(1, weight=1)
 
-        # Main content
+        # Main dashboard area
         self.main_area = ctk.CTkFrame(
             self.wrapper,
             fg_color="transparent"
@@ -70,24 +69,22 @@ class DashboardFrame(ctk.CTkFrame):
         self.main_area.grid(
             row=0,
             column=0,
-            rowspan=2,
             sticky="nsew",
-            padx=(0, 22)
+            padx=(0, 20)
         )
 
         self.main_area.grid_columnconfigure(0, weight=1)
 
-        # Right sidebar
+        # Right panel
         self.right_panel = ctk.CTkFrame(
             self.wrapper,
             fg_color="transparent",
-            width=210
+            width=190
         )
 
         self.right_panel.grid(
             row=0,
             column=1,
-            rowspan=2,
             sticky="nsew"
         )
 
@@ -115,7 +112,7 @@ class DashboardFrame(ctk.CTkFrame):
 
         header.pack(
             fill="x",
-            pady=(0, 20)
+            pady=(0, 18)
         )
 
         ctk.CTkLabel(
@@ -164,16 +161,16 @@ class DashboardFrame(ctk.CTkFrame):
                 section,
                 fg_color=WHITE,
                 corner_radius=9,
+                height=78,
                 border_width=1,
-                border_color=BORDER,
-                height=78
+                border_color=BORDER
             )
 
             card.pack(
                 side="left",
                 fill="both",
                 expand=True,
-                padx=(0, 10)
+                padx=(0, 9)
             )
 
             card.pack_propagate(False)
@@ -186,16 +183,16 @@ class DashboardFrame(ctk.CTkFrame):
             content.pack(
                 fill="both",
                 expand=True,
-                padx=12,
-                pady=10
+                padx=10,
+                pady=8
             )
 
             ctk.CTkLabel(
                 content,
                 text=symbol,
-                font=(BODY_FONT, 20),
+                font=(BODY_FONT, 19),
                 text_color=MOCHA
-            ).pack(side="left", padx=(0, 12))
+            ).pack(side="left", padx=(0, 9))
 
             details = ctk.CTkFrame(
                 content,
@@ -233,7 +230,7 @@ class DashboardFrame(ctk.CTkFrame):
 
         banner.pack(
             fill="x",
-            pady=(0, 20)
+            pady=(0, 19)
         )
 
         banner.pack_propagate(False)
@@ -242,7 +239,7 @@ class DashboardFrame(ctk.CTkFrame):
         banner.grid_columnconfigure(1, weight=1)
         banner.grid_rowconfigure(0, weight=1)
 
-        # Text section
+        # Left text section
         text_area = ctk.CTkFrame(
             banner,
             fg_color="transparent"
@@ -253,7 +250,7 @@ class DashboardFrame(ctk.CTkFrame):
             column=0,
             sticky="nsew",
             padx=22,
-            pady=18
+            pady=15
         )
 
         ctk.CTkLabel(
@@ -261,7 +258,7 @@ class DashboardFrame(ctk.CTkFrame):
             text="YOUR DAILY INSPIRATION",
             font=(BODY_FONT, 9, "bold"),
             text_color=MOCHA
-        ).pack(anchor="w", pady=(5, 10))
+        ).pack(anchor="w", pady=(5, 9))
 
         ctk.CTkLabel(
             text_area,
@@ -292,7 +289,7 @@ class DashboardFrame(ctk.CTkFrame):
             if self.navigate_callback else None
         ).pack(anchor="w")
 
-        # Image section
+        # Right image placeholder
         self.banner_image_area = ctk.CTkFrame(
             banner,
             fg_color="#D8C9B9",
@@ -305,49 +302,20 @@ class DashboardFrame(ctk.CTkFrame):
             sticky="nsew"
         )
 
-        self.load_banner_image()
+        self.create_banner_placeholder()
 
-    def load_banner_image(self):
-
-        # Optional local inspiration image.
-        # Add your own image at assets/inspiration.jpg
-
-        image_path = BASE_DIR / "assets" / "inspiration.jpg"
-
-        if image_path.exists():
-
-            try:
-
-                img = Image.open(image_path).convert("RGB")
-
-                photo = ctk.CTkImage(
-                    light_image=img,
-                    dark_image=img,
-                    size=(300, 205)
-                )
-
-                self.images.append(photo)
-
-                ctk.CTkLabel(
-                    self.banner_image_area,
-                    text="",
-                    image=photo
-                ).pack(fill="both", expand=True)
-
-                return
-
-            except Exception:
-                pass
+    def create_banner_placeholder(self):
 
         ctk.CTkLabel(
             self.banner_image_area,
-            text="Your wardrobe,\nyour inspiration.",
-            font=(HEADING_FONT, 20, "italic"),
-            text_color=TEXT
+            text="FASHION FLATLAY\nIMAGE PLACEHOLDER",
+            font=(BODY_FONT, 11),
+            text_color=MOCHA,
+            justify="center"
         ).pack(expand=True)
 
     # ======================================
-    # RECENTLY ADDED SECTION
+    # RECENTLY ADDED
     # ======================================
 
     def create_recent_section(self):
@@ -404,48 +372,17 @@ class DashboardFrame(ctk.CTkFrame):
 
         gallery.pack(fill="x")
 
-        for item in clothes:
+        if clothes:
 
-            self.create_clothing_card(gallery, item)
+            for item in clothes:
+                self.create_clothing_card(gallery, item)
 
-        if not clothes:
+        else:
 
-            empty = ctk.CTkFrame(
-                gallery,
-                fg_color=WHITE,
-                corner_radius=10,
-                border_width=1,
-                border_color=BORDER
-            )
-
-            empty.pack(fill="x", pady=5)
-
-            ctk.CTkLabel(
-                empty,
-                text="Your wardrobe starts here.",
-                font=(HEADING_FONT, 20),
-                text_color=TEXT
-            ).pack(pady=(18, 4))
-
-            ctk.CTkLabel(
-                empty,
-                text="Add your first clothing item to begin.",
-                font=(BODY_FONT, 11),
-                text_color=MUTED
-            ).pack(pady=(0, 10))
-
-            ctk.CTkButton(
-                empty,
-                text="+ Add clothing",
-                fg_color=TEXT,
-                hover_color=MOCHA,
-                text_color=WHITE,
-                command=lambda: self.navigate("Add Clothing")
-                if self.navigate_callback else None
-            ).pack(pady=(0, 18))
+            self.create_empty_wardrobe(gallery)
 
     # ======================================
-    # INDIVIDUAL CLOTHING CARD
+    # CLOTHING IMAGE CARDS
     # ======================================
 
     def create_clothing_card(self, parent, item):
@@ -456,7 +393,6 @@ class DashboardFrame(ctk.CTkFrame):
             corner_radius=10,
             border_width=1,
             border_color=BORDER,
-            width=145,
             height=165
         )
 
@@ -464,18 +400,16 @@ class DashboardFrame(ctk.CTkFrame):
             side="left",
             fill="both",
             expand=True,
-            padx=(0, 9)
+            padx=(0, 8)
         )
 
         card.pack_propagate(False)
 
-        image_path = item.get("image_path")
-
         image_box = ctk.CTkFrame(
             card,
             fg_color="#EEE8DE",
-            corner_radius=5,
-            height=108
+            height=108,
+            corner_radius=5
         )
 
         image_box.pack(
@@ -486,6 +420,7 @@ class DashboardFrame(ctk.CTkFrame):
 
         image_box.pack_propagate(False)
 
+        image_path = item.get("image_path")
         loaded = False
 
         if image_path:
@@ -524,9 +459,9 @@ class DashboardFrame(ctk.CTkFrame):
 
             ctk.CTkLabel(
                 image_box,
-                text="No image",
-                font=(BODY_FONT, 10),
-                text_color=MUTED
+                text="IMAGE PLACEHOLDER",
+                font=(BODY_FONT, 8),
+                text_color=MOCHA
             ).pack(expand=True)
 
         ctk.CTkLabel(
@@ -535,11 +470,7 @@ class DashboardFrame(ctk.CTkFrame):
             font=(BODY_FONT, 11, "bold"),
             text_color=TEXT,
             anchor="w"
-        ).pack(
-            fill="x",
-            padx=8,
-            pady=(1, 0)
-        )
+        ).pack(fill="x", padx=8, pady=(1, 0))
 
         ctk.CTkLabel(
             card,
@@ -547,14 +478,50 @@ class DashboardFrame(ctk.CTkFrame):
             font=(BODY_FONT, 9),
             text_color=MOCHA,
             anchor="w"
-        ).pack(
-            fill="x",
-            padx=8,
-            pady=(0, 5)
-        )
+        ).pack(fill="x", padx=8, pady=(0, 5))
 
     # ======================================
-    # RIGHT PANEL - QUICK ACTIONS
+    # EMPTY WARDROBE
+    # ======================================
+
+    def create_empty_wardrobe(self, parent):
+
+        empty = ctk.CTkFrame(
+            parent,
+            fg_color=WHITE,
+            corner_radius=10,
+            border_width=1,
+            border_color=BORDER
+        )
+
+        empty.pack(fill="x", pady=5)
+
+        ctk.CTkLabel(
+            empty,
+            text="Your wardrobe starts here.",
+            font=(HEADING_FONT, 20),
+            text_color=TEXT
+        ).pack(pady=(18, 4))
+
+        ctk.CTkLabel(
+            empty,
+            text="Add your first clothing item to begin.",
+            font=(BODY_FONT, 11),
+            text_color=MUTED
+        ).pack(pady=(0, 10))
+
+        ctk.CTkButton(
+            empty,
+            text="+ Add clothing",
+            fg_color=TEXT,
+            hover_color=MOCHA,
+            text_color=WHITE,
+            command=lambda: self.navigate("Add Clothing")
+            if self.navigate_callback else None
+        ).pack(pady=(0, 18))
+
+    # ======================================
+    # QUICK ACTIONS
     # ======================================
 
     def create_quick_actions(self):
@@ -577,9 +544,9 @@ class DashboardFrame(ctk.CTkFrame):
         ).pack(pady=(12, 8))
 
         actions = [
-            ("＋", "Add clothing", "Add Clothing"),
+            ("＋", "Add\nclothing", "Add Clothing"),
             ("✧", "Get looks", "Recommendations"),
-            ("▦", "Plan outfit", "Outfit Planner")
+            ("▦", "Plan\noutfit", "Outfit Planner")
         ]
 
         row = ctk.CTkFrame(
@@ -587,7 +554,7 @@ class DashboardFrame(ctk.CTkFrame):
             fg_color="transparent"
         )
 
-        row.pack(fill="x", padx=8, pady=(0, 12))
+        row.pack(fill="x", padx=7, pady=(0, 12))
 
         for symbol, label, page in actions:
 
@@ -605,8 +572,8 @@ class DashboardFrame(ctk.CTkFrame):
             ctk.CTkButton(
                 action,
                 text=symbol,
-                width=43,
-                height=40,
+                width=40,
+                height=39,
                 corner_radius=5,
                 fg_color=SIDEBAR,
                 hover_color="#E5DED4",
@@ -619,12 +586,12 @@ class DashboardFrame(ctk.CTkFrame):
             ctk.CTkLabel(
                 action,
                 text=label,
-                font=(BODY_FONT, 9),
+                font=(BODY_FONT, 8),
                 text_color=TEXT
             ).pack(pady=(4, 0))
 
     # ======================================
-    # RIGHT PANEL - TOP PICKS
+    # TOP PICKS IMAGE PLACEHOLDERS
     # ======================================
 
     def create_top_picks(self):
@@ -644,51 +611,52 @@ class DashboardFrame(ctk.CTkFrame):
             text="Top picks for you",
             font=(HEADING_FONT, 18),
             text_color=TEXT
-        ).pack(pady=(12, 7))
+        ).pack(pady=(12, 8))
 
-        preview = ctk.CTkFrame(
+        gallery = ctk.CTkFrame(
             card,
-            fg_color=SIDEBAR,
-            height=112,
-            corner_radius=5
+            fg_color="transparent"
         )
 
-        preview.pack(
-            fill="x",
-            padx=12,
-            pady=(0, 7)
-        )
+        gallery.pack(fill="x", padx=9)
 
-        preview.pack_propagate(False)
+        items = ["TOPS", "DENIM", "BAGS"]
 
-        ctk.CTkLabel(
-            preview,
-            text="Your wardrobe favourites",
-            font=(HEADING_FONT, 15, "italic"),
-            text_color=MOCHA
-        ).pack(expand=True)
+        for item_name in items:
+
+            placeholder = ctk.CTkFrame(
+                gallery,
+                fg_color=SIDEBAR,
+                width=48,
+                height=90,
+                corner_radius=5
+            )
+
+            placeholder.pack(
+                side="left",
+                expand=True,
+                fill="both",
+                padx=3
+            )
+
+            placeholder.pack_propagate(False)
+
+            ctk.CTkLabel(
+                placeholder,
+                text=item_name,
+                font=(BODY_FONT, 8),
+                text_color=MOCHA
+            ).pack(expand=True)
 
         ctk.CTkLabel(
             card,
-            text="Discover your personal style.",
+            text="Casual chic  ·  Everyday",
             font=(BODY_FONT, 9),
             text_color=MOCHA
-        ).pack(pady=(0, 12))
-
-        ctk.CTkButton(
-            card,
-            text="Explore looks  →",
-            height=29,
-            fg_color="transparent",
-            hover_color=SIDEBAR,
-            text_color=MOCHA,
-            font=(BODY_FONT, 10),
-            command=lambda: self.navigate("Recommendations")
-            if self.navigate_callback else None
-        ).pack(pady=(0, 7))
+        ).pack(pady=(8, 12))
 
     # ======================================
-    # RIGHT PANEL - TRACK YOUR STYLE
+    # TRACK YOUR STYLE
     # ======================================
 
     def create_style_card(self):
@@ -706,7 +674,7 @@ class DashboardFrame(ctk.CTkFrame):
             text="Track your style",
             font=(HEADING_FONT, 19),
             text_color=TEXT
-        ).pack(anchor="w", padx=16, pady=(14, 8))
+        ).pack(anchor="w", padx=15, pady=(14, 8))
 
         ctk.CTkLabel(
             card,
@@ -714,7 +682,7 @@ class DashboardFrame(ctk.CTkFrame):
             font=(BODY_FONT, 10),
             text_color=TEXT,
             justify="left"
-        ).pack(anchor="w", padx=16)
+        ).pack(anchor="w", padx=15)
 
         ctk.CTkButton(
             card,
@@ -729,6 +697,6 @@ class DashboardFrame(ctk.CTkFrame):
             if self.navigate_callback else None
         ).pack(
             anchor="w",
-            padx=16,
+            padx=15,
             pady=14
         )
